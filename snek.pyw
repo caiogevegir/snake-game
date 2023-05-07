@@ -12,6 +12,7 @@ ASSETS_PATH = os.path.join(BASE_PATH, 'assets')
 
 SCREEN_X = 320
 SCREEN_Y = 240
+SCREEN_UNIT = 8
 
 COLORS = {
     'lightgreen': pygame.Color(0xc7, 0xf0, 0xd8),
@@ -27,7 +28,7 @@ KEY_EVENTS = {
 
 pygame.init()
 pygame.display.set_caption('Snek')
-game_window = pygame.display.set_mode((SCREEN_X, SCREEN_Y))
+window = pygame.display.set_mode((SCREEN_X, SCREEN_Y))
 fps = pygame.time.Clock()
 
 direction = Snake.Directions.RIGHT
@@ -42,7 +43,8 @@ snake = Snake(
 fruit = Fruit(
     screen_x=SCREEN_X,
     screen_y=SCREEN_Y,
-    image=pygame.image.load(os.path.join(ASSETS_PATH, 'fruit.png'))
+    image=pygame.image.load(os.path.join(ASSETS_PATH, 'fruit.png')),
+    unit=SCREEN_UNIT
 )
 
 score = Score(
@@ -50,8 +52,8 @@ score = Score(
     color=COLORS['darkgreen']
 )
 
-def game_over():
-    game_window.fill(COLORS['lightgreen'])
+def finish():
+    window.fill(COLORS['lightgreen'])
     my_font = pygame.font.SysFont('courier', 20)
     game_over_surface = my_font.render(
         'Your Score is: ' + str(score.value), 
@@ -60,12 +62,11 @@ def game_over():
     )
     game_over_rect = game_over_surface.get_rect()
     game_over_rect.midtop = (SCREEN_X/2, SCREEN_Y/4)
-    game_window.blit(game_over_surface, game_over_rect)
+    window.blit(game_over_surface, game_over_rect)
     pygame.display.flip()
     time.sleep(2)
     pygame.quit()
     sys.exit()
-
 
 while True:
 
@@ -81,21 +82,22 @@ while True:
             sys.exit()
 
     # Logic
-    snake.move(direction)
+    snake.move(direction, SCREEN_UNIT)
     snake.grow_if_eat_fruit(fruit)
     if fruit.was_eaten:
         score.update()
-        fruit.spawn(SCREEN_X, SCREEN_Y)
+        fruit.spawn(SCREEN_X, SCREEN_Y, SCREEN_UNIT)
 
     # Draw stuff on screen
-    game_window.fill(COLORS['lightgreen'])
-    snake.draw(game_window)
-    fruit.draw(game_window)
-    score.display(game_window)
+    window.fill(COLORS['lightgreen'])
+    snake.draw(window, SCREEN_UNIT)
+    fruit.draw(window)
+    score.display(window)
 
     # Game Over conditions
-    if snake.has_collided_on_itself() or snake.has_collided_on_screen_edges(SCREEN_X, SCREEN_Y):
-        game_over()
+    if snake.has_collided_on_itself() or \
+    snake.has_collided_on_screen_edges(SCREEN_X, SCREEN_Y, SCREEN_UNIT):
+        finish()
 
     pygame.display.update()
     fps.tick(snake.speed)

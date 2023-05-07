@@ -1,8 +1,6 @@
 import pygame
 from enum import Enum
 
-from .globals import Global
-
 class Snake:
 
     class Directions(Enum):
@@ -18,19 +16,25 @@ class Snake:
         self.direction = direction
         self.speed = 15
 
-    def move(self, new_direction: Directions) -> None:
+    def move(self, new_direction: Directions, unit: int) -> None:
         if new_direction == Snake.Directions.UP and self.direction != Snake.Directions.DOWN:
             self.direction = Snake.Directions.UP
-            self.position[1] -= Global.unit
         if new_direction == Snake.Directions.DOWN and self.direction != Snake.Directions.UP:
             self.direction = Snake.Directions.DOWN
-            self.position[1] += Global.unit
         if new_direction == Snake.Directions.LEFT and self.direction != Snake.Directions.RIGHT:
             self.direction = Snake.Directions.LEFT
-            self.position[0] -= Global.unit
         if new_direction == Snake.Directions.RIGHT and self.direction != Snake.Directions.LEFT:
             self.direction = Snake.Directions.RIGHT
-            self.position[0] += Global.unit
+
+        match self.direction:
+            case Snake.Directions.UP:
+                self.position[1] -= unit
+            case Snake.Directions.DOWN:
+                self.position[1] += unit
+            case Snake.Directions.LEFT:
+                self.position[0] -= unit
+            case Snake.Directions.RIGHT:
+                self.position[0] += unit
 
     def grow_if_eat_fruit(self, fruit) -> None:
         self.body.insert(0, list(self.position))
@@ -39,18 +43,18 @@ class Snake:
         else:
             self.body.pop()
 
-    def draw(self, game_window) -> None:
+    def draw(self, game_window, unit) -> None:
         for block in self.body:
             pygame.draw.rect(
                 game_window, 
                 self.color, 
-                pygame.Rect(block[0], block[1], Global.unit, Global.unit)
+                pygame.Rect(block[0], block[1], unit, unit)
             )
     
-    def has_collided_on_screen_edges(self, screen_x, screen_y) -> bool:
+    def has_collided_on_screen_edges(self, screen_x, screen_y, unit) -> bool:
         return (
-            self.position[0] < 0 or self.position[0] > screen_x-Global.unit or
-            self.position[1] < 0 or self.position[1] > screen_y-Global.unit
+            self.position[0] < 0 or self.position[0] > screen_x-unit or
+            self.position[1] < 0 or self.position[1] > screen_y-unit
         )
     
     def has_collided_on_itself(self) -> bool:
