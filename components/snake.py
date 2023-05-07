@@ -9,11 +9,12 @@ class Snake:
         UP = 3
         DOWN = 4
 
-    def __init__(self, position, body, color, direction) -> None:
+    def __init__(self, position, body, color, direction, image) -> None:
         self.position = position
         self.body = body
         self.color = color
         self.direction = direction
+        self.image = image
         self.speed = 15
 
     def move(self, new_direction, unit) -> None:
@@ -43,13 +44,9 @@ class Snake:
         else:
             self.body.pop()
 
-    def draw(self, game_window, unit) -> None:
+    def draw(self, window) -> None:
         for block in self.body:
-            pygame.draw.rect(
-                game_window, 
-                self.color, 
-                pygame.Rect(block[0], block[1], unit, unit)
-            )
+            window.blit(self.image, block)
     
     def has_collided_on_screen_edges(self, screen_x, screen_y, unit) -> bool:
         return (

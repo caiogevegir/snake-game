@@ -13,5 +13,5 @@ class Fruit:
         ]
         self.was_eaten = False
 
-    def draw(self, game_window) -> None:
-        game_window.blit(self.image, self.position)
+    def draw(self, window) -> None:
+        window.blit(self.image, self.position)

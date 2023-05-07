@@ -28,7 +28,8 @@ snake = Snake(
     position=[96, 48],
     body=[ [96, 48], [88, 48], [80, 48], [72, 48] ],
     color=COLORS['darkgreen'],
-    direction=Snake.Directions.RIGHT
+    direction=Snake.Directions.RIGHT,
+    image=pygame.image.load(os.path.join(ASSETS_PATH, 'snake_body.png')),
 )
 
 fruit = Fruit(
@@ -80,7 +81,7 @@ while True:
 
     # Draw stuff on screen
     window.fill(COLORS['lightgreen'])
-    snake.draw(window, SCREEN_UNIT)
+    snake.draw(window)
     fruit.draw(window)
     score.display(window)
 
