@@ -24,8 +24,6 @@ pygame.display.set_caption('Snek')
 window = pygame.display.set_mode((SCREEN_X, SCREEN_Y))
 fps = pygame.time.Clock()
 
-direction = Snake.Directions.RIGHT
-
 snake = Snake(
     position=[96, 48],
     body=[ [96, 48], [88, 48], [80, 48], [72, 48] ],
@@ -49,7 +47,7 @@ def finish():
     window.fill(COLORS['lightgreen'])
     my_font = pygame.font.SysFont('courier', 20)
     game_over_surface = my_font.render(
-        'Your Score is: ' + str(score.value), 
+        'Score: ' + str(score.value), 
         True, 
         COLORS['darkgreen']
     )
@@ -62,6 +60,8 @@ def finish():
     sys.exit()
 
 while True:
+
+    direction = None
 
     # Events
     for event in pygame.event.get():
