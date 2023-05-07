@@ -16,14 +16,14 @@ class Snake:
         self.direction = direction
         self.speed = 15
 
-    def move(self, new_direction: Directions, unit: int) -> None:
-        if new_direction == Snake.Directions.UP and self.direction != Snake.Directions.DOWN:
+    def move(self, new_direction, unit) -> None:
+        if new_direction == pygame.K_UP and self.direction != Snake.Directions.DOWN:
             self.direction = Snake.Directions.UP
-        if new_direction == Snake.Directions.DOWN and self.direction != Snake.Directions.UP:
+        if new_direction == pygame.K_DOWN and self.direction != Snake.Directions.UP:
             self.direction = Snake.Directions.DOWN
-        if new_direction == Snake.Directions.LEFT and self.direction != Snake.Directions.RIGHT:
+        if new_direction == pygame.K_LEFT and self.direction != Snake.Directions.RIGHT:
             self.direction = Snake.Directions.LEFT
-        if new_direction == Snake.Directions.RIGHT and self.direction != Snake.Directions.LEFT:
+        if new_direction == pygame.K_RIGHT and self.direction != Snake.Directions.LEFT:
             self.direction = Snake.Directions.RIGHT
 
         match self.direction:

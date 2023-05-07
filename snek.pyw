@@ -19,13 +19,6 @@ COLORS = {
     'darkgreen': pygame.Color(0x43, 0x52, 0x3d)
 }
 
-KEY_EVENTS = {
-    pygame.K_UP: Snake.Directions.UP,
-    pygame.K_DOWN: Snake.Directions.DOWN,
-    pygame.K_LEFT: Snake.Directions.LEFT,
-    pygame.K_RIGHT: Snake.Directions.RIGHT
-}
-
 pygame.init()
 pygame.display.set_caption('Snek')
 window = pygame.display.set_mode((SCREEN_X, SCREEN_Y))
@@ -37,7 +30,7 @@ snake = Snake(
     position=[96, 48],
     body=[ [96, 48], [88, 48], [80, 48], [72, 48] ],
     color=COLORS['darkgreen'],
-    direction=direction
+    direction=Snake.Directions.RIGHT
 )
 
 fruit = Fruit(
@@ -73,10 +66,7 @@ while True:
     # Events
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
-            try:
-                direction = KEY_EVENTS[event.key]
-            except KeyError:
-                pass
+            direction = event.key
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
